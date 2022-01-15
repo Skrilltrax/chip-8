@@ -1,4 +1,4 @@
-package dev.skrilltrax.chip8.model
+package dev.skrilltrax.chip8.display
 
 class DisplayMatrix private constructor() {
 

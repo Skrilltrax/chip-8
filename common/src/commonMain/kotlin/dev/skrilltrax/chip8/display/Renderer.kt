@@ -1,4 +1,4 @@
-package dev.skrilltrax.chip8
+package dev.skrilltrax.chip8.display
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
@@ -6,9 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import dev.skrilltrax.chip8.model.DisplayMatrix
-import dev.skrilltrax.chip8.model.DisplayMatrix.Companion.COLUMNS
-import dev.skrilltrax.chip8.model.DisplayMatrix.Companion.ROWS
+import dev.skrilltrax.chip8.display.DisplayMatrix.Companion.COLUMNS
+import dev.skrilltrax.chip8.display.DisplayMatrix.Companion.ROWS
 
 private const val SCALE = 100
 
