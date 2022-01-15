@@ -1,5 +1,8 @@
 package dev.skrilltrax.chip8.display
 
+import dev.skrilltrax.chip8.display.Display.Companion.COLUMNS
+import dev.skrilltrax.chip8.display.Display.Companion.ROWS
+
 class DisplayMatrix private constructor() {
 
   private val matrix = IntArray(ROWS * COLUMNS) { 0 }
@@ -19,6 +22,10 @@ class DisplayMatrix private constructor() {
     return pixelValue == 1
   }
 
+  fun clear() {
+    matrix.fill(0)
+  }
+
   private fun findWrappedLocation(x: Int, y: Int): Int {
     // TODO: Think about x = COLUMNS case
     val wrappedX = when {
@@ -35,9 +42,6 @@ class DisplayMatrix private constructor() {
   }
 
   companion object {
-    const val COLUMNS = 64
-    const val ROWS = 32
-
     fun createEmpty(): DisplayMatrix {
       return DisplayMatrix()
     }
