@@ -17,7 +17,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion = 31.toString()
+    compileSdkVersion(31)
     defaultConfig {
         applicationId = "dev.skrilltrax.android"
         minSdk = 24
