@@ -1,6 +1,7 @@
 package dev.skrilltrax.chip8.cpu
 
 import dev.skrilltrax.chip8.display.Display
+import dev.skrilltrax.chip8.keyboard.Keyboard
 import kotlin.random.Random
 import kotlin.random.nextUInt
 
@@ -11,6 +12,7 @@ class CPU {
   private val stack = Stack()
   private val timers = Timers()
   private val display = Display()
+  private val keyboard = Keyboard()
 
   // Some instructions require pausing, such as Fx0A.
   private var paused = false
@@ -119,17 +121,37 @@ class CPU {
           }
         }
       }
-      Opcode.SKP_VX -> TODO()
-      Opcode.SKNP_VX -> TODO()
-      Opcode.LD_VX_DT -> TODO()
-      Opcode.LD_VX_K -> TODO()
-      Opcode.LD_DT_VX -> TODO()
-      Opcode.LD_ST_VX -> TODO()
-      Opcode.ADD_I_VX -> TODO()
-      Opcode.LD_F_VX -> TODO()
-      Opcode.LD_B_VX -> TODO()
-      Opcode.LD_I_VX -> TODO()
-      Opcode.LD_VX_I -> TODO()
+      Opcode.SKP_VX -> if (keyboard.isKeyPressed(registers.v[x])) registers.pc += 2
+      Opcode.SKNP_VX -> if (!keyboard.isKeyPressed(registers.v[x])) registers.pc += 2
+      Opcode.LD_VX_DT -> registers.v[x] = timers.delayTimer
+      Opcode.LD_VX_K -> {
+        paused = true
+        val key = keyboard.waitForKeyPress()
+        if (key != -1) {
+          registers.v[x] = key
+          paused = false
+        }
+      }
+      Opcode.LD_DT_VX -> timers.delayTimer = registers.v[x]
+      Opcode.LD_ST_VX -> timers.soundTimer = registers.v[x]
+      Opcode.ADD_I_VX -> registers.i += registers.v[x]
+      Opcode.LD_F_VX -> registers.i = registers.v[x] * 5
+      Opcode.LD_B_VX -> {
+        val value = registers.v[x]
+        memory.write(registers.i, value / 100)
+        memory.write(registers.i + 1, (value % 100) / 10)
+        memory.write(registers.i + 2, value % 10)
+      }
+      Opcode.LD_I_VX -> {
+        for (registerIndex in   0..x) {
+          memory.write(registers.i + registerIndex, registers.v[registerIndex])
+        }
+      }
+      Opcode.LD_VX_I -> {
+        for (registerIndex in 0..x) {
+          registers.v[registerIndex] = memory.read(registers.i + registerIndex)
+        }
+      }
     }
   }
 

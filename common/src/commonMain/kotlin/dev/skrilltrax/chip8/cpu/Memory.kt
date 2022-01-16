@@ -16,6 +16,10 @@ class Memory {
     program.forEachIndexed { index, byte -> memory[PROGRAM_START_ADDRESS + index] = byte }
   }
 
+  fun write(address: Int, value: Int) {
+    memory[address] = value
+  }
+
   private fun loadSpritesIntoMemory() {
     val sprites = intArrayOf(
       0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
