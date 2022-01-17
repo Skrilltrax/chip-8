@@ -3,16 +3,15 @@ package dev.skrilltrax.chip8.cpu
 import dev.skrilltrax.chip8.display.Display
 import dev.skrilltrax.chip8.keyboard.Keyboard
 import kotlin.random.Random
-import kotlin.random.nextUInt
 
-class CPU {
-
-  private val memory = Memory()
-  private val registers = Registers()
-  private val stack = Stack()
-  private val timers = Timers()
-  private val display = Display()
-  private val keyboard = Keyboard()
+class CPU(
+  private val display: Display,
+  private val keyboard: Keyboard,
+  private val memory: Memory,
+  private val registers: Registers,
+  private val stack: Stack,
+  private val timers: Timers
+) {
 
   // Some instructions require pausing, such as Fx0A.
   private var paused = false
@@ -65,7 +64,7 @@ class CPU {
       }
       Opcode.SE_VX -> if (registers.v[x] == kk) registers.pc += 2
       Opcode.SNE_VX -> if (registers.v[x] != kk) registers.pc += 2
-      Opcode.SE_VX_VY ->  if (registers.v[x] == registers.v[y]) registers.pc += 2
+      Opcode.SE_VX_VY -> if (registers.v[x] == registers.v[y]) registers.pc += 2
       Opcode.LD_VX -> registers.v[x] = kk
       Opcode.ADD_VX -> registers.v[x] += kk
       Opcode.LD_VX_VY -> registers.v[x] = registers.v[y]
@@ -143,7 +142,7 @@ class CPU {
         memory.write(registers.i + 2, value % 10)
       }
       Opcode.LD_I_VX -> {
-        for (registerIndex in   0..x) {
+        for (registerIndex in 0..x) {
           memory.write(registers.i + registerIndex, registers.v[registerIndex])
         }
       }
