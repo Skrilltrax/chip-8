@@ -1,6 +1,6 @@
 package dev.skrilltrax.chip8.keyboard
 
-enum class Keys(val key: Int) {
+enum class Key(val value: Int) {
   One(0x1),
   Two(0x2),
   Three(0x3),
