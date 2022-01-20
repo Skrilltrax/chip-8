@@ -13,7 +13,7 @@ class Memory {
   }
 
   fun loadIntoMemory(program: IntArray) {
-    program.forEachIndexed { index, byte -> memory[PROGRAM_START_ADDRESS + index] = byte }
+    program.forEachIndexed { index, byte -> memory[PROGRAM_START_ADDRESS + index] = byte.toUByte().toInt() }
   }
 
   fun write(address: Int, value: Int) {
