@@ -69,7 +69,7 @@ enum class Opcode(val code: String) {
                   0x0006 -> SHR_VX_VY
                   0x0007 -> SUBN_VX_VY
                   0x000E -> SHL_VX_VY
-                  else -> throw IllegalArgumentException("Unknown opcode: $opcode")
+                  else -> throw IllegalArgumentException("Unknown opcode: ${opcode.toString(16)}")
                 }
               }
               0x9000 -> SNE_VX_VY
@@ -81,7 +81,7 @@ enum class Opcode(val code: String) {
                 when(opcode and 0x00FF) {
                   0x009E -> SKP_VX
                   0x00A1 -> SKNP_VX
-                  else -> throw IllegalArgumentException("Unknown opcode: $opcode")
+                  else -> throw IllegalArgumentException("Unknown opcode: ${opcode.toString(16)}")
                 }
               }
               0xF000 -> {
@@ -95,10 +95,10 @@ enum class Opcode(val code: String) {
                   0x0033 -> LD_B_VX
                   0x0055 -> LD_I_VX
                   0x0065 -> LD_VX_I
-                  else -> throw IllegalArgumentException("Unknown opcode: $opcode")
+                  else -> throw IllegalArgumentException("Unknown opcode: ${opcode.toString(16)}")
                 }
               }
-              else -> throw IllegalArgumentException("Unknown opcode: $opcode")
+              else -> throw IllegalArgumentException("Unknown opcode: ${opcode.toString(16)}")
             }
         }
     }

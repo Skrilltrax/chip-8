@@ -16,7 +16,7 @@ class CPU(
   // Some instructions require pausing, such as Fx0A.
   private var paused = false
 
-  private val speed = 10
+  private val speed = 100
 
   fun cycle() {
     repeat(speed) {
