@@ -4,14 +4,16 @@ package dev.skrilltrax.chip8
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import dev.skrilltrax.chip8.cpu.*
+import dev.skrilltrax.chip8.cpu.CPU
+import dev.skrilltrax.chip8.cpu.Memory
+import dev.skrilltrax.chip8.cpu.Registers
+import dev.skrilltrax.chip8.cpu.Stack
+import dev.skrilltrax.chip8.cpu.Timers
 import dev.skrilltrax.chip8.display.Display
 import dev.skrilltrax.chip8.display.DisplayMatrix
 import dev.skrilltrax.chip8.keyboard.Keyboard
@@ -26,25 +28,32 @@ class Chip8 {
   private val timers = Timers()
   private val cpu = CPU(display, keyboard, memory, registers, stack, timers)
 
-  @Composable
-  fun Render() {
-    val displayMatrix = remember { display.displayMatrix }
-
-    LaunchedEffect(Unit) {
-      while (true) {
-        cpu.cycle()
-      }
-    }
-
-    Screen(displayMatrix, Modifier.fillMaxSize())
+  fun loadRom(rom: ByteArray) {
+    val intRom = rom.map { it.toInt() }
+    memory.loadIntoMemory(intRom.toIntArray())
   }
 
   @Composable
-  fun Screen(displayMatrix: DisplayMatrix, modifier: Modifier = Modifier, scale: Int = Display.SCALE) {
+  fun Render(scale: Int) {
+    val displayMatrix = display.getDisplayMatrixFlow().collectAsState(DisplayMatrix())
+
+    LaunchedEffect(Unit) {
+      while (true) {
+        withFrameNanos {
+          cpu.cycle()
+        }
+      }
+    }
+
+    Screen(displayMatrix.value, Modifier.fillMaxSize(), scale)
+  }
+
+  @Composable
+  private fun Screen(displayMatrix: DisplayMatrix, modifier: Modifier = Modifier, scale: Int = Display.SCALE) {
     Canvas(modifier) {
       for (y in 0 until Display.ROWS) {
         for (x in 0 until Display.COLUMNS) {
-          val color = if (displayMatrix.getPixel(x, y)) Color.Black else Color.White
+          val color = if (displayMatrix.getPixel(x, y)) Color.White else Color.Black
           drawRect(
             color = color,
             topLeft = Offset((x * scale).toFloat(), (y * scale).toFloat()),
@@ -54,5 +63,4 @@ class Chip8 {
       }
     }
   }
-
 }
