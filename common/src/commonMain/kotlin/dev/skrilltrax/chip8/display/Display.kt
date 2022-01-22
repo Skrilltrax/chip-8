@@ -23,10 +23,6 @@ class Display {
     return displayMatrix.getPixel(x, y)
   }
 
-  fun getDisplayMatrixFlow(): Flow<DisplayMatrix> {
-    return displayMatrixFlow
-  }
-
   companion object {
     const val COLUMNS = 64
     const val ROWS = 32

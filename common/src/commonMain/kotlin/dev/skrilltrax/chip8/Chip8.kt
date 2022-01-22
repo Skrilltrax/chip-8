@@ -35,7 +35,7 @@ class Chip8 {
 
   @Composable
   fun Render(scale: Int) {
-    val displayMatrix = display.getDisplayMatrixFlow().collectAsState(DisplayMatrix())
+    val displayMatrix = display.displayMatrixFlow.collectAsState(DisplayMatrix())
 
     LaunchedEffect(Unit) {
       while (true) {
