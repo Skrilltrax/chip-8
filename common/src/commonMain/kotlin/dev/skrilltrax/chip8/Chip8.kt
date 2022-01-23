@@ -39,9 +39,7 @@ class Chip8 {
 
     LaunchedEffect(Unit) {
       while (true) {
-        withFrameNanos {
-          cpu.cycle()
-        }
+        cpu.cycle()
       }
     }
 
